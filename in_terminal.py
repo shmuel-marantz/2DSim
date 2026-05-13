@@ -50,7 +50,7 @@ def print_matrix(matrix):
             print(j, end="")
         print("")
 
-def ply():
+def play():
     
     num = int(input('enter a number:\n'))
     matrix = create_matrix()
