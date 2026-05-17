@@ -16,7 +16,7 @@ def play ():
 
     pygame.init()
     screen = pygame.display.set_mode((len(matrix[0])*13, len(matrix)*13))
-    BLUE = (255, 255, 255)
+    WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     TILE_SIZE = 13
     running = True
@@ -37,7 +37,7 @@ def play ():
                 rect = pygame.Rect(x, y, TILE_SIZE, TILE_SIZE)
 
                 if value == '0':
-                    pygame.draw.rect(screen, BLUE, rect)
+                    pygame.draw.rect(screen, WHITE, rect)
                     
         pygame.display.flip() 
 
