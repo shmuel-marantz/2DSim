@@ -1,39 +1,34 @@
 import random, copy
 
+def get_neighbors(matrix, i, j):
+    neighbors = []
+    if j != 0:
+        neighbors.append(matrix[i][j - 1])
+        if i != 0:
+            neighbors.append(matrix[i - 1][j - 1])
+    if i != 0:
+        neighbors.append(matrix[i - 1][j])
+        if j != len(matrix[0]) - 1:
+            neighbors.append(matrix[i - 1][j + 1])
+    if j != len(matrix[0]) - 1:
+        neighbors.append(matrix[i][j + 1])
+        if i != len(matrix) - 1:
+            neighbors.append(matrix[i + 1][j + 1])
+    if i != len(matrix) - 1:
+        neighbors.append(matrix[i + 1][j])
+        if j != 0:
+            neighbors.append(matrix[i + 1][j - 1])
+    return neighbors
+
 def make_turn(matrix):
     mtx = copy.deepcopy(matrix)
-    row_len = len(matrix[0])
-    col_len = len(matrix)
-    for i in range(col_len):
-        for j in range(row_len):
-            count = 0
-            if j != 0:
-                if matrix[i][j - 1] == "0":
-                    count += 1
-                if i != 0:
-                    if matrix[i - 1][j - 1] == '0':
-                        count += 1
-            if i != 0:
-                if matrix[i - 1][j] == '0':
-                    count += 1
-                if j != row_len - 1:
-                    if matrix[i - 1][j + 1] == '0':
-                        count += 1
-            if j != row_len - 1:
-                if matrix[i][j + 1] == '0':
-                    count += 1
-                if i != col_len - 1:
-                    if matrix[i + 1][j + 1] == '0':
-                        count += 1
-            if i != col_len - 1:
-                if matrix[i + 1][j] == '0':
-                    count += 1
-                if j != 0:
-                    if matrix[i + 1][j - 1] == '0':
-                        count += 1
-            if count > 3 or count < 2:
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            neighbors = get_neighbors(matrix, i, j)
+            count_0 = neighbors.count('0')
+            if count_0 > 3 or count_0 < 2:
                 mtx[i][j] = "."
-            if count == 3:
+            if count_0 == 3:
                 mtx[i][j] = '0'
     return mtx
 

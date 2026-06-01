@@ -1,0 +1,24 @@
+simulation:
+  grid_width: 30
+  grid_height: 8
+  # max_steps: 1000
+
+initialization:
+  rock_amount: 7
+  plant_amount: 10
+  herbivore_amount: 10
+  predator_amount: 10
+
+entities:
+  plant:
+    lifespan: 15
+    spawn_chance: 0.02
+
+  herbivore:
+    lifespan: 20
+    # sight_radius: 5
+    prevents_reproduction: 8
+
+  predator:
+    lifespan: 30
+    # sight_radius: 7
