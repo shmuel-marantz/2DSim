@@ -1,6 +1,6 @@
 import yaml
 
-with open ('.yaml') as file:
+with open ('general_version.yaml') as file:
     config = yaml.safe_load(file)
 
 GRID_WIDTH = config['simulation']['grid_width']
