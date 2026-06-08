@@ -33,7 +33,7 @@ def create_matrix():
 def play():
     matrix = create_matrix()
     for _ in range(STEPS):
-        for i in matrix:
+        for i in matrix: 
             for j in i:
                 print(j.icon, end="")
             print("")
