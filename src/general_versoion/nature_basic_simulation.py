@@ -1,88 +1,53 @@
 import random
-
 from .constants import *
-from .entities.plant import handle_growing_plants
-from .entities.herbivore import handle_herbivore_actions
-from .entities.predator import handle_predator_actions
+from .entities.Empty import Empty
+from .entities.Rock import Rock
+from .entities.Entity import Entity
+from .entities.Plant import Plant
+from .entities.Herbivore import Herbivore
+from .entities.Predator import Predator
 
-icons = {'empty': '⬛', 'rock': '🔴', 'plant': '🌿', 'herbivore': '🐐', 'predator': '🐺'}
+def embed_in_matrix(matrix, amount, entity):
+    for _ in range(amount):
+        flag = False
+        while flag == False:
+            y = random.randint(0, len(matrix) - 1)
+            x = random.randint(0, len(matrix[0]) - 1)
+            if isinstance(matrix[y][x], Empty):
+                matrix[y][x] = entity(x, y)
+                flag = True
 
-def get_random_cell(matrix):
-    return random.randint(0, len(matrix) - 1), random.randint(0, len(matrix[0]) - 1)
-
-def make_turn(matrix, switch):
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            entity = matrix[i][j]
-            if entity['type'] in ['rock', 'empty']:
-                continue
-            if entity.get('switch') != switch:
-                if entity.get('lifespan') == 0:
-                    matrix[i][j] = {'type': 'empty'}
-                    continue
-                else:
-                    entity['lifespan'] -= 1
-            if entity['type'] == 'predator':
-                handle_predator_actions(matrix, i, j, entity, switch)
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            entity = matrix[i][j]
-            if entity['type'] == 'herbivore':
-                handle_herbivore_actions(matrix, i, j, entity, switch)
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            entity = matrix[i][j]
-            if entity['type'] == 'empty':
-                handle_growing_plants(matrix, i, j)
-            
-def play():
+def create_matrix():
     matrix = []
-    for _ in range(GRID_HEIGHT):
+    for i in range(GRID_HEIGHT):
         row = []
-        for _ in range(GRID_WIDTH):
-            row.append({'type': "empty"})
+        for j in range(GRID_WIDTH):
+            row.append(Empty(j, i))
         matrix.append(row)
-    for _ in range(ROCK_AMOUNT):
-        flag = False
-        while flag == False:
-            y = get_random_cell(matrix)[0]
-            x = get_random_cell(matrix)[1]
-            if matrix[y][x]['type'] == 'empty':
-                matrix[y][x] = {'type': 'rock'}
-                flag = True
-    for _ in range(PLANT_AMOUNT):
-        flag = False
-        while flag == False:
-            y = get_random_cell(matrix)[0]
-            x = get_random_cell(matrix)[1]
-            if matrix[y][x]['type'] == 'empty':
-                matrix[y][x] = {'type': 'plant', 'lifespan': PLANT_LIFESPAN}
-                flag = True
-    for _ in range(HERBIVORE_AMOUNT):
-        flag = False
-        while flag == False:
-            y = get_random_cell(matrix)[0]
-            x = get_random_cell(matrix)[1]
-            if matrix[y][x]['type'] == 'empty':
-                matrix[y][x] = { 'switch': 'even', "type": "herbivore", "lifespan": HERBIVORE_LIFESPAN, "prevents reproduction": 0}
-                flag = True
-    for _ in range(PREDATOR_AMOUNT):
-        flag = False
-        while flag == False:
-            y = get_random_cell(matrix)[0]
-            x = get_random_cell(matrix)[1]
-            if matrix[y][x]['type'] == 'empty':
-                matrix[y][x] = { 'switch': 'even', "type": "predator", "lifespan": PREDATOR_LIFESPAN}
-                flag = True
-    switch = 'even'
-    for _ in range(15):
+    embed_in_matrix(matrix, ROCK_AMOUNT, Rock)
+    embed_in_matrix(matrix, PLANT_AMOUNT, Plant)
+    embed_in_matrix(matrix, HERBIVORE_AMOUNT, Herbivore)
+    embed_in_matrix(matrix, PREDATOR_AMOUNT, Predator)
+    return matrix
+
+def play():
+    matrix = create_matrix()
+    for _ in range(STEPS):
         for i in matrix:
             for j in i:
-                print(icons[j['type']], end="")
+                print(j.icon, end="")
             print("")
         print('===========================================')
-        if switch == 'even':
-            switch = 'odd'
-        else:
-            switch = 'even'
-        make_turn(matrix, switch)
+        entities = []
+        for i in matrix:
+            for j in i:
+                if isinstance(j, Entity):
+                    entities.append(j)
+        entities.sort(key=lambda e: e.priority)
+        for e in entities:
+            if e.is_alive:
+                e.update(matrix)
+        for i in matrix:
+            for j in i:
+                if isinstance(j, Empty):
+                    j.update(matrix)

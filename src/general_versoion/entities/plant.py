@@ -1,6 +1,11 @@
-import random
-from ..constants import SPAWN_CHANCE, PLANT_LIFESPAN
+from .Entity import Entity
+from ..constants import PLANT_LIFESPAN
 
-def handle_growing_plants(matrix, i, j):
-    if random.randint(1, 100) <= SPAWN_CHANCE * 100:
-        matrix[i][j] = {'type': 'plant', 'lifespan': PLANT_LIFESPAN}
+class Plant(Entity):
+    def __init__(self, x, y):
+        super().__init__(x, y, PLANT_LIFESPAN)
+        self.priority = 15
+        self.icon = '🌿'
+    
+    def update(self, matrix):
+        self.handle_lifespan(matrix)

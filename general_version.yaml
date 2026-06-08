@@ -1,6 +1,7 @@
 simulation:
   grid_width: 30
   grid_height: 8
+  steps: 10
   # max_steps: 1000
 
 initialization:
@@ -17,7 +18,7 @@ entities:
   herbivore:
     lifespan: 20
     # sight_radius: 5
-    prevents_reproduction: 8
+    prevents_reproduction: 4
 
   predator:
     lifespan: 30

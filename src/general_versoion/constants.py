@@ -5,6 +5,7 @@ with open ('general_version.yaml') as file:
 
 GRID_WIDTH = config['simulation']['grid_width']
 GRID_HEIGHT = config['simulation']['grid_height']
+STEPS = config['simulation']['steps']
 ROCK_AMOUNT = config['initialization']['rock_amount']
 PLANT_AMOUNT = config['initialization']['plant_amount']
 HERBIVORE_AMOUNT = config['initialization']['herbivore_amount']
