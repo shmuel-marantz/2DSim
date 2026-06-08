@@ -9,6 +9,7 @@ initialization:
   plant_amount: 10
   herbivore_amount: 10
   predator_amount: 10
+  person_amount: 2
 
 entities:
   plant:
@@ -23,3 +24,6 @@ entities:
   predator:
     lifespan: 30
     # sight_radius: 7
+
+  person:
+    lifespan: 25

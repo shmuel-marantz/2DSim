@@ -6,6 +6,7 @@ from .entities.Entity import Entity
 from .entities.Plant import Plant
 from .entities.Herbivore import Herbivore
 from .entities.Predator import Predator
+from .entities.Person import Person
 
 def embed_in_matrix(matrix, amount, entity):
     for _ in range(amount):
@@ -28,6 +29,7 @@ def create_matrix():
     embed_in_matrix(matrix, PLANT_AMOUNT, Plant)
     embed_in_matrix(matrix, HERBIVORE_AMOUNT, Herbivore)
     embed_in_matrix(matrix, PREDATOR_AMOUNT, Predator)
+    embed_in_matrix(matrix, PERSON_AMOUNT, Person)
     return matrix
 
 def play():

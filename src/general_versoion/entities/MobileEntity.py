@@ -25,10 +25,10 @@ class MobileEntity(Entity):
                     break
         return False
 
-    def handle_animal_movement(self, matrix):
+    def handle_movement(self, matrix):
         close_neighbors = get_neighbors(matrix, self.y, self.x)
         for neighbor in close_neighbors:
-            if isinstance(neighbor, self.food):
+            if type(neighbor) in self.food:
                 neighbor.is_alive = False
                 self.current_lifaspan = self.max_lifespan
                 matrix[self.y][self.x] = Empty(self.x, self.y)
@@ -39,7 +39,7 @@ class MobileEntity(Entity):
             if isinstance(neighbor, Empty) or isinstance(neighbor, Plant):
                 neighbors_neighbor = get_neighbors(matrix, neighbor.y, neighbor.x)
                 for neighbor1 in neighbors_neighbor:
-                    if isinstance(neighbor1, self.food):
+                    if type(neighbor1) in self.food:
                         neighbor.is_alive = False
                         matrix[self.y][self.x] = Empty(self.x, self.y)
                         self.x, self.y = neighbor.x, neighbor.y
