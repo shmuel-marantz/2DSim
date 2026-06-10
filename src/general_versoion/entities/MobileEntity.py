@@ -15,14 +15,24 @@ class MobileEntity(Entity):
         if self.current_prevents_reproduction == 0:
             close_neighbors = get_neighbors(matrix, self.y, self.x)
             for neighbor in close_neighbors:
-                if type(neighbor) is type(self) and neighbor.current_prevents_reproduction == 0:
+                if type(neighbor) is type(self) and neighbor.current_prevents_reproduction == 0 and neighbor.current_lifaspan != 0:
                     for neighbor1 in close_neighbors:
                         if isinstance(neighbor1, Empty):
                             matrix[neighbor1.y][neighbor1.x] = type(self)(neighbor1.x, neighbor1.y)
                             self.current_prevents_reproduction = self.max_prevents_reproduction
-                            neighbor.current_prevents_reproduction = neighbor.max_prevents_reproduction
+                            neighbor.current_prevents_reproduction = neighbor.max_prevents_reproduction + 1
                             return True
-                    break
+                    neighbors_neighbor = get_neighbors(matrix, neighbor.y, neighbor.x)
+                    for neighbor1 in neighbors_neighbor:
+                        if isinstance(neighbor1, Empty):
+                            matrix[neighbor1.y][neighbor1.x] = type(self)(neighbor1.x, neighbor1.y)
+                            self.current_prevents_reproduction = self.max_prevents_reproduction
+                            neighbor.current_prevents_reproduction = neighbor.max_prevents_reproduction + 1
+                            return True
+        else:
+            self.current_prevents_reproduction -= 1
+            if self.current_prevents_reproduction == self.max_prevents_reproduction:
+                return True
         return False
 
     def handle_movement(self, matrix):
@@ -34,7 +44,7 @@ class MobileEntity(Entity):
                 matrix[self.y][self.x] = Empty(self.x, self.y)
                 self.x, self.y = neighbor.x, neighbor.y
                 matrix[self.y][self.x] = self
-                return
+                return 'ate'
         for neighbor in close_neighbors:
             if isinstance(neighbor, Empty) or isinstance(neighbor, Plant):
                 neighbors_neighbor = get_neighbors(matrix, neighbor.y, neighbor.x)

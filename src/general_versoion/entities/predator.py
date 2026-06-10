@@ -11,4 +11,5 @@ class Predator(MobileEntity):
     def update(self, matrix):
         if self.handle_lifespan(matrix) == False:
             return
-        self.handle_movement(matrix)
+        if self.handle_movement(matrix) == 'ate':
+            print(f'Alert: The predator in cell {self.x} {self.y} devoured a herbivore')

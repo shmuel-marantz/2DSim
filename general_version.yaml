@@ -6,15 +6,15 @@ simulation:
 
 initialization:
   rock_amount: 7
-  plant_amount: 10
-  herbivore_amount: 10
-  predator_amount: 10
+  herbivore_amount: 7
+  predator_amount: 7
   person_amount: 2
 
 entities:
   plant:
     lifespan: 15
-    spawn_chance: 0.02
+    spawn_chance: 0.03
+    plant_alert_threshold: 0.9
 
   herbivore:
     lifespan: 20
